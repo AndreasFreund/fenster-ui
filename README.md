@@ -2,6 +2,11 @@
 
 A compact desktop-style component framework on React Aria Components.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/readme-dark.png">
+  <img src=".github/readme-light.png" alt="A file browser built with fenster-ui: menu bar, command bar, folder tree, file list with a state column, and status bar" width="1000">
+</picture>
+
 - [`packages/fenster-ui`](packages/fenster-ui): the library, published as
   [`@andreasfreund/fenster-ui`](https://www.npmjs.com/package/@andreasfreund/fenster-ui)
 - [`apps/demo`](apps/demo): every component with live examples, deployed to

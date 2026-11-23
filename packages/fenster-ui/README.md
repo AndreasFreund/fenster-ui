@@ -4,6 +4,11 @@ A compact desktop-style component framework on [React Aria Components](https://r
 React Aria provides behaviour, keyboard handling and accessibility; this package provides layout, look and a few
 app-level helpers (commands, shortcuts, appearance).
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/AndreasFreund/fenster-ui/main/.github/readme-dark.png">
+  <img src="https://raw.githubusercontent.com/AndreasFreund/fenster-ui/main/.github/readme-light.png" alt="A file browser built with fenster-ui: menu bar, command bar, folder tree, file list with a state column, and status bar" width="1000">
+</picture>
+
 ## Install
 
 ```sh

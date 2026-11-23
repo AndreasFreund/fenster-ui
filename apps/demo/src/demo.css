@@ -19,3 +19,18 @@
 .demo-readout { padding: var(--space-2) var(--space-3); }
 .demo-rules { display: flex; flex-direction: column; gap: var(--space-3); }
 .demo-frame { display: flex; flex-direction: column; height: 180px; }
+.demo-frame--app { height: 460px; }
+
+/* The README picture: the example app in a whole window, with the name over a dimmed centre (?shot=light or dark). */
+.demo-shot {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: radial-gradient(ellipse 48% 60% at center, var(--bg) 0%, var(--bg) 40%, transparent 100%);
+  color: var(--ink);
+  font: 600 80px/1 var(--font-sans);
+  letter-spacing: -0.02em;
+}

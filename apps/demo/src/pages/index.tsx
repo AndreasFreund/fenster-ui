@@ -3,7 +3,7 @@ import { Lists, Smaller, Trees } from './collections';
 import { Buttons, Choices, DatesAndColours, Fields, Ranges } from './controls';
 import { Dialogs, Notifications, Sections, StatusPage, Tooltips } from './feedback';
 import { Bars, Commands, Frame } from './layout';
-import { Guidelines, Overview } from './start';
+import { ExamplePage, Guidelines, Overview } from './start';
 
 export interface Page {
   id: string;
@@ -19,6 +19,7 @@ export const GROUPS: Group[] = [
   {
     id: 'start', title: 'Getting started', lead: 'What the framework is and the rules it follows.', pages: [
       { id: 'overview', title: 'Overview', lead: 'A compact desktop-style component framework on React Aria Components.', Body: Overview },
+      { id: 'example', title: 'Example app', lead: 'The components together, as an app would use them.', Body: ExamplePage },
       { id: 'guidelines', title: 'Design guidelines', lead: 'Nine short rules. The components follow them, and so does this demo.', Body: Guidelines },
     ],
   },

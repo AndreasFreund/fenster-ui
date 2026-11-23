@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Callout } from '@andreasfreund/fenster-ui';
 import { copy } from '../copy';
 import { Example, PageLink } from '../demo';
+import { ExampleApp } from '../ExampleApp';
 import { closeIcon } from '../icons';
 import { Status } from '../status';
 
@@ -17,6 +18,14 @@ root.render(
     <AppFrame>…</AppFrame>
   </LabelsProvider>
 );`;
+
+export function ExamplePage() {
+  return (
+    <Example title="File browser" note="Menus, a command bar, a tree, a sortable list, tabs, a callout and a status bar, working together. Everything in it is live." flush>
+      <div className="demo-frame demo-frame--app"><ExampleApp /></div>
+    </Example>
+  );
+}
 
 export function Overview() {
   const [noteShown, setNoteShown] = useState(true);
@@ -34,6 +43,7 @@ export function Overview() {
       />
       <Example title="Start" note="Load the styles and fonts once, apply the saved appearance, then render inside an AppFrame." code={START} />
       <Example title="Where next">
+        <p><PageLink to="example">Example app</PageLink>: the components together, as an app would use them.</p>
         <p><PageLink to="guidelines">Design guidelines</PageLink>: the rules the components and this demo follow.</p>
         <p><PageLink to="frame">App frame</PageLink>: bars, panes and the status bar.</p>
         <p><PageLink to="list">List view</PageLink>: sorting, resizing and selection.</p>
