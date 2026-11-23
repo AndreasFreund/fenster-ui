@@ -32,6 +32,36 @@ function useSnapToPixel(ref: RefObject<HTMLElement | null>, active: boolean) {
   }, [ref, active]);
 }
 
+/** Places a floating dialog inside `over`, or inside the window, on whole pixels. */
+function useFloatingPlacement(ref: RefObject<HTMLElement | null>, active: boolean, placement: 'top end' | 'center', over: RefObject<HTMLElement | null> | undefined) {
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!active || !el) return;
+    const edge = 8;
+    const place = () => {
+      const anchor = over?.current;
+      const a = anchor ? anchor.getBoundingClientRect() : { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
+      const { width, height } = el.getBoundingClientRect();
+      let left = a.left + (a.width - width) / 2;
+      let top = a.top + (a.height - height) / 2;
+      if (placement === 'top end') {
+        top = a.top + edge;
+        left = getComputedStyle(el).direction === 'rtl' ? a.left + edge : a.left + a.width - width - edge;
+      }
+      // Stays inside the window when the anchor is smaller than the dialog or partly out of view.
+      left = Math.max(edge, Math.min(left, window.innerWidth - width - edge));
+      top = Math.max(edge, Math.min(top, window.innerHeight - height - edge));
+      el.style.inset = `${Math.round(top)}px auto auto ${Math.round(left)}px`;
+    };
+    place();
+    const observer = new ResizeObserver(place);
+    observer.observe(el);
+    if (over?.current) observer.observe(over.current);
+    window.addEventListener('resize', place);
+    return () => { observer.disconnect(); window.removeEventListener('resize', place); el.style.inset = ''; };
+  }, [ref, active, placement, over]);
+}
+
 export interface DialogProps extends Omit<RACDialogProps, 'children'> {
   /** Heading in the `title` type style. */
   title: ReactNode;
@@ -43,6 +73,10 @@ export interface DialogProps extends Omit<RACDialogProps, 'children'> {
   closeLabel?: string;
   /** Non-modal dialogs float without blocking the app; Escape closes them. @default true */
   isModal?: boolean;
+  /** Non-modal only: where it floats. @default 'top end' */
+  placement?: 'top end' | 'center';
+  /** Non-modal only: the element to place it in, such as a Pane; otherwise the window. */
+  over?: RefObject<HTMLElement | null>;
   /** Modal only: whether clicking outside closes it. @default false */
   isDismissable?: ModalOverlayProps['isDismissable'];
   isOpen?: boolean;
@@ -50,9 +84,11 @@ export interface DialogProps extends Omit<RACDialogProps, 'children'> {
 }
 
 /** A dialog. Use inside a DialogTrigger, or control `isOpen`. */
-export function Dialog({ title, children, closeIcon, closeLabel, isModal = true, isDismissable, isOpen, onOpenChange, className, ...props }: DialogProps) {
+export function Dialog({ title, children, closeIcon, closeLabel, isModal = true, placement = 'top end', over, isDismissable, isOpen, onOpenChange, className, ...props }: DialogProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   useSnapToPixel(modalRef, isModal && isOpen !== false);
+  const floatingRef = useRef<HTMLDivElement>(null);
+  useFloatingPlacement(floatingRef, !isModal && !!isOpen && (placement === 'center' || over != null), placement, over);
   const body = (
     <RACDialog {...props} className={cx('fui-dialog', className as string)}>
       {(state) => (
@@ -76,7 +112,7 @@ export function Dialog({ title, children, closeIcon, closeLabel, isModal = true,
       if (e.key === 'Escape') { e.stopPropagation(); onOpenChange?.(false); }
     };
     // oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- catches keys bubbling from the dialog content
-    return <div className="fui-floating fui-modal" onKeyDown={onKeyDown}>{body}</div>;
+    return <div ref={floatingRef} className="fui-floating fui-modal" onKeyDown={onKeyDown}>{body}</div>;
   }
   return (
     <ModalOverlay className="fui-modal-overlay" isDismissable={isDismissable} isOpen={isOpen} onOpenChange={onOpenChange}>

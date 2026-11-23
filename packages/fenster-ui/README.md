@@ -77,7 +77,7 @@ bundler emits the font files.
 ## Labels and language
 
 The framework contains no wording. Visible labels are props (field labels, `ListLoadMore` / `TreeViewLoadMore`
-children, `ToastRegion closeLabel` / `waitingLabel`, `ColorPicker hueLabel` / `hexLabel`, `SplitView splitterLabel`, `Dialog closeLabel`).
+children, `ToastRegion closeLabel` / `waitingLabel`, `ColorPicker hueLabel` / `hexLabel`, `SplitView splitterLabel`, `Dialog closeLabel`, `Callout closeLabel`, `BarSearchField clearLabel`).
 The one word a component renders itself, the status word before field errors, is `LabelsProvider`'s `invalid`; its
 optional `keyNames` localise shortcut
 legends (`{ Ctrl: 'Strg', Delete: 'Entf' }`). Accessible names of internal buttons (spin buttons, combo box button,
@@ -95,10 +95,10 @@ Layouts use logical properties and mirror in right-to-left locales.
 | `StatusBar`, `StatusCell` | div | First cell stretches; `live` cells are announced. |
 | `MenuBar`, `BarMenu`, `MenuItem`, `MenuSeparator`, `MenuGroup`, `Submenu` | `Toolbar`, `MenuTrigger`, `Menu`, `SubmenuTrigger` | `shortcut` and `icon` on items; menus switch on hover and Left/Right while open. |
 | `Command`, `useCommands` | | One definition for a command's label, shortcut, icon, disabled state and action. |
-| `CommandBar`, `BarTextField`, `BarSearchField`, `BarButton`, `BarSeparator`, `BarSpacer` | `TextField`, `SearchField`, `Button`, `Separator` | Bars of controls that stay in view. `BarButton icon` adds an icon; without text the button is square and needs an `aria-label`. |
+| `CommandBar`, `BarTextField`, `BarSearchField`, `BarButton`, `BarSeparator`, `BarSpacer` | `TextField`, `SearchField`, `Button`, `Separator` | Bars of controls that stay in view. `BarButton icon` adds an icon; without text the button is square and needs an `aria-label`. `BarSearchField clearIcon` + `clearLabel` add a clear button, shown while the field has text. |
 | `Button`, `Link` | `Button`, `Link` | `variant`: `default`, `primary`, `danger`. |
 | `ToggleButton`, `ToggleButtonGroup` | same | `bar` for the bar size. |
-| `Form`, `TextField`, `NumberField`, `ComboBox`, `Select`, `SelectItem`, `SelectSection`, `GroupBox` | same | Label and control columns. `TextField multiline`, `mono`. `GroupBox isDisabled` disables its contents. |
+| `Form`, `TextField`, `NumberField`, `ComboBox`, `Select`, `SelectItem`, `SelectSection`, `GroupBox` | same | Label and control columns; in a `Dialog` the control column grows with its widest content. `TextField multiline`, `mono`. `GroupBox isDisabled` disables its contents. |
 | `Checkbox`, `CheckboxGroup`, `RadioGroup`, `Radio`, `Switch` | same | `isIndeterminate` on Checkbox. |
 | `DateField`, `TimeField`, `DatePicker`, `Calendar` | same | |
 | `Slider` | `Slider` | |
@@ -108,11 +108,11 @@ Layouts use logical properties and mirror in right-to-left locales.
 | `TreeView`, `TreeViewItem`, `TreeViewLoadMore` | `Tree` | Data (`TreeNode`) or JSX; `itemIcon`, `marker`, drag and drop. |
 | `Tabs`, `TabList`, `Tab`, `TabPanel` | `Tabs` | Horizontal, one row. Tabs that don't fit scroll sideways; a marker at each edge with more tabs beyond it scrolls there on click (on touch, swipe). |
 | `StatusMarker` | span | A coloured square and a word: `<StatusMarker tone="critical">FAIL</StatusMarker>`. |
-| `Callout` | div | Message tinted by `tone`, with an optional `marker` and `title`. |
+| `Callout` | div | Message tinted by `tone`, with an optional `marker` and `title`. `onDismiss` + `closeIcon` add a close button; the parent removes the callout. |
 | `ProgressBar`, `Meter` | same | |
 | `ToastRegion`, `toasts` | `UNSTABLE_Toast*` | `toasts.add({ title, description, marker }, { timeout })`. Toasts stay until closed, unless given a `timeout` (ms) or `toasts.timeout` is set. The newest three show, newest nearest the status bar; `waitingLabel(n)` counts the rest. |
-| `Tooltip`, `TooltipTrigger` | same | |
-| `Dialog`, `DialogFooter`, `DialogTrigger` | `ModalOverlay`, `Dialog` | `isModal={false}` floats; `closeIcon` adds a close button. |
+| `Tooltip`, `TooltipTrigger` | same | `TooltipTrigger` wraps a focusable control. |
+| `Dialog`, `DialogFooter`, `DialogTrigger` | `ModalOverlay`, `Dialog` | `isModal={false}` floats at the window's top end; `placement="center"` centres it and `over={ref}` places it in that element, such as a `Pane`. `closeIcon` adds a close button. |
 | `Popover` | `Popover`, `Dialog` | A small dialog attached to its button, inside a `DialogTrigger`. Closes on Escape or a click outside. |
 | `Disclosure`, `DisclosureGroup` | same | |
 | `Breadcrumbs` | `Breadcrumbs` | A bar showing where the content is; place it at the top of a pane, edge to edge. |
@@ -123,49 +123,44 @@ Layouts use logical properties and mirror in right-to-left locales.
 
 ## Design guidelines
 
-**Layout.** Bars at the top, status bar at the bottom, panes divided by single lines. Navigation in the left pane, the
-list or form on the right. Forms put labels in a fixed left column. Dialog buttons sit at the end of the dialog,
-primary first. Use `space-1` between a symbol and its label, `space-2` between buttons, `space-3` as dialog padding,
-`space-4` between groups and `space-5` between sections. Borders are 1px; corners are square except buttons, tab tops
-and round radio buttons; no shadows.
+**Layout.** Bars on top, status bar at the bottom, navigation left, content right; panes divided by single lines.
+Borders are 1px, there are no shadows, and corners are square except on buttons, tab tops and radios. Forms put labels
+in a fixed left column; dialog buttons sit at the end, primary first. Spacing: `space-1` symbol to label, `space-2`
+between buttons, `space-3` dialog padding, `space-4` between groups, `space-5` between sections.
 
-**Type.** `display` names the page, `heading` a section, `title` a group or dialog; everything else is `ui`, and
-code, paths and status words are `code`. Use weight, not more sizes, for emphasis.
+**Type.** `display` for the page, `heading` for a section, `title` for a group or dialog, `ui` for everything else,
+`code` for code, paths and status words. Emphasise with weight, not size.
 
-**Colour.**
-- One highlight: selected rows and items, the item under the pointer or keyboard in menus and lists, open menu
-  titles, toggled buttons and selected text use `accent-bg` with `ink` text.
-- Solid `accent` means "on" or "primary": primary buttons, checked boxes, switches, slider and progress fills, links.
-- Text is `ink`, secondary text `ink-muted`, disabled text `ink-disabled`. Only `title`, `heading` and `display` may use
-  `accent` (`fui-accent`).
-- Tones (`neutral`, `info`, `positive`, `caution`, `critical`) are for status only, never decoration. Always show a
-  word with the colour; `critical` only for real failures.
-- Dark mode is dark grey with off-white text rather than pure black and white, which causes halation for many readers
-  with astigmatism. Users who need maximum contrast use the OS high-contrast mode.
+**Colour.** `accent-bg` is the one highlight: selected, hovered, open, toggled. Solid `accent` means on or primary:
+primary buttons, checked boxes, switches, fills, links. Text is `ink`, `ink-muted` or `ink-disabled`; only `title`,
+`heading` and `display` may take `accent` (`fui-accent`). Tones are for status only and always come with a word;
+`critical` only for real failures. Dark mode is dark grey on purpose, because pure black and white blur for many readers
+with astigmatism; maximum contrast is the OS's job.
 
-**Status and feedback.** Put a row's state in a status column, never tint the row. Routine feedback goes to the status
-bar; a toast is for news that arrives on its own, such as a finished background job. Errors don't time out. Error
-messages say what happened, then what to do.
+**Status and feedback.** State goes in a status column, not a row tint. Routine feedback goes to the status bar and
+may fade; a toast is for news that arrives on its own. Errors stay until dismissed and say what happened, then what to
+do. The framework knows tones, not meanings: keep the app's states in one module that maps each to a tone and a word
+(see `demo/status.tsx`), and add tones with CSS: `.fui-tone--archived { --fui-tone: …; --fui-tone-bg: …; }`.
 
-**Status vocabulary.** The framework knows tones, not meanings. Keep the app's states in one module that maps each
-to a tone, a word and its behaviour, such as whether its notifications close on their own, and use only that module's
-components in the app (see `demo/status.tsx`). Add tones with CSS: `.fui-tone--archived { --fui-tone: …; --fui-tone-bg: …; }`.
+**Controls.** Text first: icons only for kinds of objects (folder, file type) and a few universal commands (new, open,
+save, find, refresh, close). Icon-only controls need a name and a tooltip. Tooltips go on focusable controls only, so keyboard users get them too;
+what an icon in a row means belongs in the row's text or a column.
+Labels are one or two words in sentence case, without exclamation marks or emoji; uppercase only in status words. One
+primary button per dialog, for the action Enter triggers; `danger` only for destroying data. Prefer a checkbox in forms;
+use a switch for settings that apply at once.
 
-**Icons.** Use an icon only when it says something the text doesn't, such as the kind of object (folder, file type).
-Commands, menus, tabs and buttons stay text only, except a few very frequent, widely known commands (new, open, save,
-find, refresh) and close buttons. Icon-only buttons need an accessible name and, for commands, a tooltip.
+**Emphasis and state.** Make the action most users came for the prominent one. Give each setting one place, and
+disable what does not apply rather than hiding it. A mark means one thing everywhere. Show any state that changes what
+is listed, such as a filter or a sort, and give it a way back: a search field gets a clear button.
 
-**Buttons.** One or two words in sentence case. One primary button per dialog, for the action Enter triggers. `danger`
-only for actions that destroy data. Prefer a checkbox in forms; use a switch for settings that apply at once.
+**Navigation.** Selecting browses; following a link navigates, and navigation is what Back undoes. Changes to a view's
+layout preview live and can be cancelled.
 
-**Copy.** Sentence case for labels; uppercase only in status words. No exclamation marks or emoji.
-
-**Touch and phones.** The framework is built for a mouse and keyboard but stays usable on a phone. A tap on a tree or
-list row selects it (row actions run on double-click or Enter only); the tree's +/- box opens and closes folders.
-Only panes scroll, bars scroll sideways when too narrow, and the navigation pane takes at most 45% of a narrow window.
-In landscape the menu, action and status bars keep clear of the notch and corners while content runs edge to edge;
-in portrait the status bar's ends keep clear of the corners. Apps should use `viewport-fit=cover` and, on iOS only,
-`maximum-scale=1`, which stops iOS zooming into small fields (see the demo's `index.html`).
+**Touch.** Built for mouse and keyboard, usable on a phone. A tap selects a row (row actions run on double-click or
+Enter only) and the tree's +/- box opens folders. Only panes scroll; bars scroll sideways when too narrow, and the
+navigation pane takes at most 45% of a narrow window. Bars keep clear of the notch and corners while content runs edge
+to edge. Use `viewport-fit=cover` and, on iOS, `maximum-scale=1`, which stops iOS zooming into small fields (see the
+demo's `index.html`).
 
 **Motion.** None, except indeterminate progress and the newest toast sliding in, both off under
 `prefers-reduced-motion`.

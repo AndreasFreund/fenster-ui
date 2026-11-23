@@ -115,6 +115,11 @@ html:has(> body .fui-app), body:has(.fui-app) { height: 100%; overflow: hidden; 
 .fui-bar-field .fui-input { height: var(--row-h); }
 .fui-bar-field--stretch .fui-input { flex: 1; min-width: 0; }
 .fui-bar .fui-input.fui-bar-search { width: 180px; min-width: 100px; flex-shrink: 1; height: var(--row-h); }
+.fui-bar-searchfield { position: relative; display: flex; align-items: center; min-width: 0; flex-shrink: 1; }
+.fui-bar .fui-bar-searchfield--clear .fui-input.fui-bar-search { padding-inline-end: var(--row-h); }
+.fui-bar-search::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+.fui-bar-searchfield .fui-bar-search-clear { position: absolute; inset-block: 1px; inset-inline-end: 1px; width: calc(var(--row-h) - 2px); height: auto; border-radius: 0; }
+.fui-bar-searchfield[data-empty] .fui-bar-search-clear { display: none; }
 
 /* Panes */
 .fui-split--resizable.fui-split--sized { grid-template-columns: min(var(--fui-nav-w), calc(100% - 40px)) 0 minmax(0, 1fr); }
@@ -163,8 +168,9 @@ html:has(> body .fui-app), body:has(.fui-app) { height: 100%; overflow: hidden; 
 /* Tree view */
 /* The expander box has an odd size so its plus/minus has a centre pixel; its top is rounded to a whole pixel. */
 .fui-tree-row, .fui-disclosure-trigger { --fui-twist-top: round(down, calc((var(--row-h) - var(--twist)) / 2), 1px); }
-.fui-tree { padding: 2px var(--space-1); outline: none; }
-.fui-tree-item { position: relative; height: var(--row-h); outline: none; cursor: default; min-width: max-content; }
+/* The side padding is on the items, so hover and selection reach the pane edges. */
+.fui-tree { padding: 2px 0; outline: none; }
+.fui-tree-item { position: relative; padding-inline: var(--space-1); height: var(--row-h); outline: none; cursor: default; min-width: max-content; }
 .fui-tree-row {
   position: relative;
   display: flex;
@@ -300,7 +306,8 @@ button.fui-twist::before { content: ""; position: absolute; inset-block-start: c
 .fui-listbox-item[data-focus-visible] { outline: 1px dotted currentColor; outline-offset: -2px; }
 .fui-cell { display: flex; align-items: center; gap: var(--space-1); height: var(--row-h); min-width: 0; }
 .fui-num > .fui-cell { justify-content: flex-end; }
-.fui-cell > :only-child:not(.fui-marker):not(.fui-icon-label):not(.fui-option) { overflow: hidden; text-overflow: ellipsis; }
+/* The padding keeps the overhang of a final italic letter inside the clip. */
+.fui-cell > :only-child:not(.fui-marker):not(.fui-icon-label):not(.fui-option) { overflow: hidden; text-overflow: ellipsis; padding-inline-end: 0.25em; margin-inline-end: -0.25em; }
 .fui-list--virtual .fui-list-cell { line-height: normal; }
 .fui-list-cell > .fui-cell { line-height: var(--lh-ui); }
 
@@ -355,6 +362,10 @@ button.fui-twist::before { content: ""; position: absolute; inset-block-start: c
 .fui-form > .fui-form-full { grid-column: 1 / -1; }
 .fui-field { display: grid; grid-template-columns: var(--label-w) minmax(0, var(--field-w)); align-items: center; gap: var(--gap-form) var(--space-2); }
 .fui-form > .fui-field { display: contents; }
+/* In a dialog the control column grows with the widest content; it starts at field-w, or less in a narrow window. */
+.fui-dialog :is(.fui-form, .fui-field) {
+  grid-template-columns: var(--label-w) minmax(min(var(--field-w), 100vw - 34px - var(--space-3) * 2 - var(--label-w) - var(--space-2)), 1fr);
+}
 .fui-label { color: var(--ink); }
 .fui-field[data-disabled] .fui-label, .fui-label[data-disabled] { color: var(--ink-disabled); }
 .fui-help { grid-column: 2; display: flex; align-items: flex-start; gap: var(--space-1); }
@@ -560,6 +571,9 @@ button.fui-twist::before { content: ""; position: absolute; inset-block-start: c
 .fui-callout-body > :first-child { margin-top: 0; }
 .fui-callout-body > :last-child { margin-bottom: 0; }
 .fui-callout--plain { grid-template-columns: 1fr; }
+.fui-callout--closable { grid-template-columns: auto 1fr auto; }
+.fui-callout--plain.fui-callout--closable { grid-template-columns: 1fr auto; }
+.fui-callout-close { margin: calc((var(--lh-ui) - var(--row-h)) / 2) calc(var(--space-1) * -1); }
 .fui-callout strong { font-weight: 600; }
 .fui-callout p { margin: 0 0 var(--space-1); }
 

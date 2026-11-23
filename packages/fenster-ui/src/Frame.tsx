@@ -3,6 +3,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  type ComponentProps,
   type CSSProperties,
   type HTMLAttributes,
   type KeyboardEvent,
@@ -180,7 +181,7 @@ export function SplitView({
   );
 }
 
-export function Pane({ className, ...props }: HTMLAttributes<HTMLElement>) {
+export function Pane({ className, ...props }: ComponentProps<'section'>) {
   return <section {...props} className={cx('fui-pane', className)} />;
 }
 

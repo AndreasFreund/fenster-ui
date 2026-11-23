@@ -66,13 +66,22 @@ export function BarTextField({ label, placeholder, mono, stretch, inputRef, clas
 export interface BarSearchFieldProps extends SearchFieldProps {
   placeholder?: string;
   inputRef?: Ref<HTMLInputElement>;
+  /** Shows a clear button while the field has text. */
+  clearIcon?: ReactNode;
+  /** Accessible name of the clear button. */
+  clearLabel?: string;
 }
 
-/** A search field for a bar. Needs an aria-label. */
-export function BarSearchField({ placeholder, inputRef, className, ...props }: BarSearchFieldProps) {
+/** A search field for a bar. Needs an aria-label. Escape clears it. */
+export function BarSearchField({ placeholder, inputRef, clearIcon, clearLabel, className, ...props }: BarSearchFieldProps) {
   return (
-    <SearchField {...props} className={withClass('fui-bar-searchfield', className)}>
+    <SearchField {...props} className={withClass(cx('fui-bar-searchfield', clearIcon != null && 'fui-bar-searchfield--clear'), className)}>
       <Input ref={inputRef} className="fui-input fui-bar-search" placeholder={placeholder} />
+      {clearIcon != null && (
+        <RACButton className="fui-icon-btn fui-bar-search-clear" aria-label={clearLabel}>
+          <span className="fui-icon-slot" aria-hidden="true">{clearIcon}</span>
+        </RACButton>
+      )}
     </SearchField>
   );
 }
