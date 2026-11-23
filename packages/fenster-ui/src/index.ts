@@ -56,7 +56,7 @@ export { DropZone, FileTrigger } from './DropZone';
 // Icons
 export { IconLabel, Arrow } from './Icon';
 // Appearance, density, labels and shortcuts
-export { ACCENT_PRESETS, DEFAULT_APPEARANCE, contrast, resolveAccent, loadAppearance, saveAppearance, applyAppearance, initAppearance, useEffectiveDark } from './appearance';
+export { ACCENT_PRESETS, DEFAULT_APPEARANCE, contrast, resolveAccent, loadAppearance, saveAppearance, applyAppearance, initAppearance, forcedAppearance, useEffectiveDark } from './appearance';
 export type { ThemeChoice, AccentChoice, Density, Appearance, AccentPreset, ResolvedAccent } from './appearance';
 export { useDensity, useMetrics } from './density';
 export type { Metrics } from './density';

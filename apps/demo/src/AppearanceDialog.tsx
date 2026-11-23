@@ -1,7 +1,7 @@
 import { useState, type CSSProperties } from 'react';
 import {
   ACCENT_PRESETS, Button, Checkbox, ColorPicker, Dialog, DialogFooter, Form, GroupBox, Link, Radio, RadioGroup,
-  applyAppearance, loadAppearance, resolveAccent, saveAppearance, useEffectiveDark,
+  applyAppearance, forcedAppearance, loadAppearance, resolveAccent, saveAppearance, useEffectiveDark,
   type AccentChoice, type Appearance, type ThemeChoice,
 } from '@andreasfreund/fenster-ui';
 import { Status } from './status';
@@ -27,6 +27,8 @@ function AppearanceForm({ isOpen, onOpenChange, onSave }: AppearanceDialogProps)
   const [lastCustom, setLastCustom] = useState(saved.accent.kind === 'custom' ? saved.accent.color : '#b0005a');
   const dark = useEffectiveDark(draft.theme);
   const t = copy.appearance;
+  // The app can decide parts itself. Their controls are left out: they would never become available.
+  const forced = forcedAppearance();
 
   const update = (next: Appearance) => {
     setDraft(next);
@@ -50,18 +52,22 @@ function AppearanceForm({ isOpen, onOpenChange, onSave }: AppearanceDialogProps)
   return (
     <Dialog title={t.title} isOpen={isOpen} onOpenChange={(open) => { if (!open) close(false); }}>
       <Form onSubmit={(e) => { e.preventDefault(); close(true); }}>
-        <RadioGroup label={t.theme} value={draft.theme} onChange={(v) => update({ ...draft, theme: v as ThemeChoice })}>
-          <Radio value="system">{t.sameAsSystem}</Radio>
-          <Radio value="light">{t.light}</Radio>
-          <Radio value="dark">{t.dark}</Radio>
-        </RadioGroup>
+        {!('theme' in forced) && (
+          <RadioGroup label={t.theme} value={draft.theme} onChange={(v) => update({ ...draft, theme: v as ThemeChoice })}>
+            <Radio value="system">{t.sameAsSystem}</Radio>
+            <Radio value="light">{t.light}</Radio>
+            <Radio value="dark">{t.dark}</Radio>
+          </RadioGroup>
+        )}
 
-        <RadioGroup label={t.size} value={draft.density} onChange={(v) => update({ ...draft, density: v as Appearance['density'] })}>
-          <Radio value="compact">{t.compact}</Radio>
-          <Radio value="comfortable">{t.comfortable}</Radio>
-        </RadioGroup>
+        {!('density' in forced) && (
+          <RadioGroup label={t.size} value={draft.density} onChange={(v) => update({ ...draft, density: v as Appearance['density'] })}>
+            <Radio value="compact">{t.compact}</Radio>
+            <Radio value="comfortable">{t.comfortable}</Radio>
+          </RadioGroup>
+        )}
 
-        <RadioGroup
+        {!('accent' in forced) && <RadioGroup
           label={t.accent}
           value={accentKey(draft.accent)}
           onChange={(v) => update({ ...draft, accent: v === 'custom' ? { kind: 'custom', color: lastCustom } : { kind: 'preset', id: v } })}
@@ -97,7 +103,7 @@ function AppearanceForm({ isOpen, onOpenChange, onSave }: AppearanceDialogProps)
               }}
             />
           </div>
-        </RadioGroup>
+        </RadioGroup>}
 
         <div className="fui-form-full">
           <GroupBox legend={t.preview}>

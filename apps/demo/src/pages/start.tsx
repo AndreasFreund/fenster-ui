@@ -58,7 +58,7 @@ const RULES: [string, string][] = [
   ['Colour', 'The pale accent is the one highlight: selected, hovered, open, toggled. Solid accent means on or primary. Tones are for status only and always come with a word.'],
   ['Status and feedback', 'State goes in a status column, not a row tint. Routine feedback goes to the status bar and may fade. Errors stay until dismissed and say what happened, then what to do.'],
   ['Controls', 'Text first: icons only for kinds of objects and a few universal commands. Labels are one or two words in sentence case. One primary button per dialog.'],
-  ['Emphasis and state', 'Make the action most users came for the prominent one. Give each setting one place, and disable what does not apply. Show any state that changes what is listed.'],
+  ['Emphasis and state', 'Make the action most users came for the prominent one. Give each setting one place, disable what does not apply right now, and leave out what never will. Show any state that changes what is listed.'],
   ['Navigation', 'Selecting browses; following a link navigates, and navigation is what Back undoes. Changes to a view\'s layout preview live and can be cancelled.'],
   ['Touch', 'Built for mouse and keyboard, usable on a phone: a tap selects, only panes scroll, bars scroll sideways.'],
   ['Motion', 'None, except indeterminate progress and the newest notification sliding in.'],

@@ -44,8 +44,11 @@ root.render(
 Set them on `<html>`, or on an `AppFrame` / `Root`: overlays opened inside a frame render inside it and inherit both.
 
 The appearance API stores the user's choice in `localStorage` and applies it:
-`loadAppearance`, `saveAppearance`, `applyAppearance`, `initAppearance`, `resolveAccent`, `ACCENT_PRESETS`.
+`loadAppearance`, `saveAppearance`, `applyAppearance`, `initAppearance`, `forcedAppearance`, `resolveAccent`, `ACCENT_PRESETS`.
 An app sets its own defaults for users who have saved nothing with `initAppearance({ theme: 'light', density: 'comfortable' })`.
+A second argument forces parts for every user, whatever they saved, such as a brand accent:
+`initAppearance({}, { accent: { kind: 'custom', color: '#b0005a' } })`. Forced parts are never written over the user's
+own choice, and `forcedAppearance()` returns them so a settings dialog can leave out their controls.
 An appearance is `{ theme: 'system' | 'light' | 'dark', accent, density: 'compact' | 'comfortable' }`, where `accent` is
 a preset id or a custom colour. Presets have ids and colours; the app names them. A custom colour is darkened (light
 theme) or lightened (dark theme) until it reaches 4.5:1 against `bg`. The demo's `src/AppearanceDialog.tsx` is an example settings dialog.
@@ -155,7 +158,7 @@ primary button per dialog, for the action Enter triggers; `danger` only for dest
 use a switch for settings that apply at once.
 
 **Emphasis and state.** Make the action most users came for the prominent one. Give each setting one place, and
-disable what does not apply rather than hiding it. A mark means one thing everywhere. Show any state that changes what
+disable what does not apply right now rather than hiding it; leave out what never will. A mark means one thing everywhere. Show any state that changes what
 is listed, such as a filter or a sort, and give it a way back: a search field gets a clear button.
 
 **Navigation.** Selecting browses; following a link navigates, and navigation is what Back undoes. Changes to a view's

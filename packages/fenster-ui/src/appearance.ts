@@ -25,6 +25,8 @@ export const DEFAULT_APPEARANCE: Appearance = { theme: 'system', accent: { kind:
 const STORAGE_KEY = 'fenster-ui:appearance';
 /** What applies while nothing is saved: DEFAULT_APPEARANCE, with the app's own defaults from `initAppearance`. */
 let defaults = DEFAULT_APPEARANCE;
+/** The parts the app decides itself, from `initAppearance`. They win over what the user saved. */
+let forced: Partial<Appearance> = {};
 
 /** `bg` of each theme, as in tokens.css. */
 const LIGHT_BG = '#ffffff';
@@ -79,7 +81,8 @@ export function resolveAccent(choice: AccentChoice): ResolvedAccent {
   };
 }
 
-export function loadAppearance(): Appearance {
+/** The user's saved choices, without the parts the app forces. */
+function loadSaved(): Appearance {
   try {
     const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
     const theme: ThemeChoice = ['system', 'light', 'dark'].includes(raw?.theme) ? raw.theme : defaults.theme;
@@ -95,9 +98,17 @@ export function loadAppearance(): Appearance {
   }
 }
 
+/** The appearance in effect: the user's saved choices, with the parts the app forces. */
+export function loadAppearance(): Appearance {
+  return { ...loadSaved(), ...forced };
+}
+
+/** Saves the user's choices. Forced parts are not saved, so the user's own choice returns if the app stops forcing. */
 export function saveAppearance(a: Appearance) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(a));
+    const saved = loadSaved();
+    const own = Object.fromEntries(Object.keys(forced).map((k) => [k, saved[k as keyof Appearance]]));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...a, ...own }));
   } catch {
     /* Storage unavailable: the choice applies for this page only. */
   }
@@ -123,10 +134,17 @@ export function applyAppearance(a: Appearance, root: HTMLElement = document.docu
 /**
  * Apply the saved appearance. Call once before the first render to avoid a flash of the default theme.
  * `appDefaults` replace parts of DEFAULT_APPEARANCE for users who have saved nothing, here and in `loadAppearance`.
+ * `appForced` sets parts for every user, whatever they saved, such as a brand accent.
  */
-export function initAppearance(appDefaults: Partial<Appearance> = {}) {
+export function initAppearance(appDefaults: Partial<Appearance> = {}, appForced: Partial<Appearance> = {}) {
   defaults = { ...DEFAULT_APPEARANCE, ...appDefaults };
+  forced = { ...appForced };
   if (typeof document !== 'undefined') applyAppearance(loadAppearance());
+}
+
+/** The parts the app forces in `initAppearance`, so a settings dialog can leave out their controls. */
+export function forcedAppearance(): Partial<Appearance> {
+  return forced;
 }
 
 const darkQuery = () => (typeof matchMedia !== 'undefined' ? matchMedia('(prefers-color-scheme: dark)') : undefined);
