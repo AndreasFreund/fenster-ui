@@ -1,0 +1,9 @@
+node_modules/
+dist/
+dist-single/
+*.tgz
+*.sqlite
+*.sqlite3
+*.db
+.env*
+.DS_Store

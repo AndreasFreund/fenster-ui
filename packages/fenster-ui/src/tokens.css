@@ -1,0 +1,159 @@
+/* Design tokens. Themes: data-theme="light" | "dark", or unset to follow the OS.
+   Densities: data-density="comfortable", or unset for compact.
+   --fui-accent-light, --fui-accent-bg-light, --fui-accent-dark and --fui-accent-bg-dark override the accent. */
+
+:root,
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-chrome: #ececec;
+  --bg-hover: #dcdcdc;
+  --ink: #000000;
+  --ink-muted: #454545;
+  --ink-disabled: #8c8c8c;
+  --line: #7a7a7a;
+  --accent: var(--fui-accent-light, #006e78);
+  --accent-bg: var(--fui-accent-bg-light, #d9e9eb);
+  --info: #2b74c9;
+  --info-bg: #dfeaf7;
+  --positive: #0a7a2f;
+  --positive-bg: #dff3e3;
+  --critical: #c4161c;
+  --critical-bg: #fbe3e1;
+  --caution: #ffd60a;
+  --caution-bg: #fff6c9;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #141414;
+  --bg-chrome: #202020;
+  --bg-hover: #303030;
+  --ink: #e6e6e6;
+  --ink-muted: #b3b3b3;
+  --ink-disabled: #6b6b6b;
+  --line: #808080;
+  --accent: var(--fui-accent-dark, #35c9bd);
+  --accent-bg: var(--fui-accent-bg-dark, #1e4a47);
+  --info: #6cb0ff;
+  --info-bg: #2a3b4f;
+  --positive: #3ddc68;
+  --positive-bg: #0f4220;
+  --critical: #ff6b61;
+  --critical-bg: #5a1512;
+  --caution: #ffd60a;
+  --caution-bg: #4a3f00;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141414;
+    --bg-chrome: #202020;
+    --bg-hover: #303030;
+    --ink: #e6e6e6;
+    --ink-muted: #b3b3b3;
+    --ink-disabled: #6b6b6b;
+    --line: #808080;
+    --accent: var(--fui-accent-dark, #35c9bd);
+    --accent-bg: var(--fui-accent-bg-dark, #1e4a47);
+    --info: #6cb0ff;
+    --info-bg: #2a3b4f;
+    --positive: #3ddc68;
+    --positive-bg: #0f4220;
+    --critical: #ff6b61;
+    --critical-bg: #5a1512;
+    --caution: #ffd60a;
+    --caution-bg: #4a3f00;
+    color-scheme: dark;
+  }
+}
+
+:root {
+  --font-sans: "IBM Plex Sans", Tahoma, Verdana, sans-serif;
+  --font-mono: "IBM Plex Mono", "Lucida Console", monospace;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+
+  --radius-sm: 2px;
+
+  /* Text and the heights that hold it follow the browser's text size, rounded to whole pixels. */
+  --px: calc(1rem / 16);            /* one pixel at the default 16px text size */
+  --row-h: round(calc(20 * var(--px)), 1px);
+  --control-h: round(calc(22 * var(--px)), 1px);
+  --bar-h: round(calc(24 * var(--px)), 1px);
+
+  /* Type */
+  --fs-ui: round(calc(12 * var(--px)), 1px); --lh-ui: round(calc(16 * var(--px)), 1px);
+  --fs-title: round(calc(14 * var(--px)), 1px); --lh-title: round(calc(20 * var(--px)), 1px);
+  --fs-heading: round(calc(18 * var(--px)), 1px); --lh-heading: round(calc(24 * var(--px)), 1px);
+  --fs-display: round(calc(24 * var(--px)), 1px); --lh-display: round(calc(28 * var(--px)), 1px);
+  --fs-code: round(calc(12 * var(--px)), 1px); --lh-code: round(calc(16 * var(--px)), 1px);
+
+  /* Layout */
+  --icon-size: 16px;
+  --label-w: 96px;   /* form label column */
+  --field-w: 220px;  /* form control column */
+  --nav-w: 200px;    /* default navigation pane */
+  --indent: 12px;    /* tree level */
+  --pad-x: 6px;      /* inner horizontal padding of inputs, cells, bar items */
+  --gap-form: 6px;   /* between form rows */
+
+  /* Control parts */
+  --twist: 9px; --twist-half: 4px;  /* tree and disclosure expander box */
+  --check: 14px;                    /* checkbox and radio */
+  --check-col: 28px;                /* list selection-checkbox column */
+  --check-mark: 10px; --mixed-h: 2px; --radio-dot: 6px;  /* marks; (check - 2 - mark) stays even so they centre */
+  --option-gap: 6px;                /* between a checkbox or radio and its label */
+  --marker: 10px;                   /* status marker square, swatches */
+  --side-btn: 18px;                 /* drop-down and spin buttons */
+  --thumb-w: 10px;                  /* slider thumb */
+  --switch-w: 26px; --switch-h: 14px;
+  --bar-sep-h: 16px;
+  --progress-h: 14px;
+  --cal-cell-w: 26px;
+  --grab: 5px;                      /* drag area of splitters and column borders */
+  --remove-btn: 10px;               /* tag remove button */
+  --seg-min-w: auto;                /* date and time segments */
+  --spin-dir: column; --spin-sep-top: 1px; --spin-sep-side: 0px;
+  --rail-w: 10px;                   /* collapsed pane rail */
+  --tab-lift: 2px;                  /* how much taller the selected tab is */
+}
+
+/* Comfortable density */
+[data-density="comfortable"] {
+  --space-1: 4px; --space-2: 8px; --space-3: 16px; --space-4: 24px; --space-5: 32px;
+  --row-h: round(calc(28 * var(--px)), 1px); --control-h: round(calc(32 * var(--px)), 1px); --bar-h: round(calc(36 * var(--px)), 1px);
+  --fs-ui: round(calc(14 * var(--px)), 1px); --lh-ui: round(calc(20 * var(--px)), 1px);
+  --fs-title: round(calc(16 * var(--px)), 1px); --lh-title: round(calc(24 * var(--px)), 1px);
+  --fs-heading: round(calc(22 * var(--px)), 1px); --lh-heading: round(calc(28 * var(--px)), 1px);
+  --fs-display: round(calc(28 * var(--px)), 1px); --lh-display: round(calc(36 * var(--px)), 1px);
+  --fs-code: round(calc(13 * var(--px)), 1px); --lh-code: round(calc(20 * var(--px)), 1px);
+  --icon-size: 20px; --label-w: 128px; --field-w: 280px; --nav-w: 240px; --indent: 16px; --pad-x: 8px; --gap-form: 8px;
+  --twist: 11px; --twist-half: 5px; --check: 16px; --check-col: 36px; --check-mark: 12px; --mixed-h: 2px; --radio-dot: 6px; --option-gap: 8px; --marker: 12px; --side-btn: 24px; --thumb-w: 12px;
+  --switch-w: 32px; --switch-h: 18px; --bar-sep-h: 20px; --progress-h: 18px; --cal-cell-w: 34px; --tab-lift: 4px; --rail-w: 14px;
+  --grab: 25px; --remove-btn: 24px; --seg-min-w: 24px; --spin-dir: row; --spin-sep-top: 0px; --spin-sep-side: 1px;
+}
+
+/* Fingers need a wide drag area on splitters and column borders in either density. */
+@media (pointer: coarse) {
+  :root, [data-density] { --grab: 25px; }
+}
+
+/*
+ * Space kept free at the bottom of a phone screen with rounded corners: the safe area less 16px, so the corners
+ * clip the status bar by only a few pixels instead of leaving the whole home-indicator strip empty.
+ */
+:root {
+  --safe-bottom: max(0px, calc(env(safe-area-inset-bottom, 0px) - 16px));
+  /*
+   * CSS has no value for the screen's corner radius. Phones with strongly rounded corners report a bottom safe area
+   * (34px on iPhones with Face ID), so a third of it keeps the status bar's ends clear of the corners in portrait.
+   * In landscape the side safe areas are larger and take over.
+   */
+  --safe-left: max(env(safe-area-inset-left, 0px), round(calc(env(safe-area-inset-bottom, 0px) / 3), 1px));
+  --safe-right: max(env(safe-area-inset-right, 0px), round(calc(env(safe-area-inset-bottom, 0px) / 3), 1px));
+}

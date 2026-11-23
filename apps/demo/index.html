@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>fenster-ui</title>
+    <style>html, body, #root { height: 100%; margin: 0; } body { background: var(--bg); }
+      /* Icons keep a 1px stroke at every size. */
+      svg.lucide * { vector-effect: non-scaling-stroke; }</style>
+    <script>
+      // iOS zooms into a field with text under 16px when it gets focus; maximum-scale stops that there (pinch zoom
+      // still works on iOS). Not set elsewhere: on other systems it would block zooming.
+      if (/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+        document.querySelector('meta[name=viewport]').content += ', maximum-scale=1';
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./src/main.tsx"></script>
+  </body>
+</html>

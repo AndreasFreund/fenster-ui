@@ -1,0 +1,13 @@
+{
+  "name": "fenster-ui-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w packages/fenster-ui && npm run build -w apps/demo",
+    "typecheck": "npm run typecheck --workspaces",
+    "dev": "npm run dev -w apps/demo"
+  }
+}
