@@ -237,7 +237,8 @@ button.fui-twist::before { content: ""; position: absolute; inset-block-start: c
 .fui-tree-row > .fui-icon-slot { margin-inline-end: -2px; }
 
 /* List view */
-.fui-list { width: 100%; border-collapse: collapse; white-space: nowrap; outline: none; }
+/* Separate borders stay inside their cells; collapsed ones spill half a pixel past the table and make it scroll. */
+.fui-list { width: 100%; border-collapse: separate; border-spacing: 0; white-space: nowrap; outline: none; }
 .fui-list-col {
   height: var(--row-h);
   padding: 0 var(--pad-x);
@@ -257,6 +258,8 @@ button.fui-twist::before { content: ""; position: absolute; inset-block-start: c
 .fui-col-resizer { position: absolute; top: 0; bottom: 0; inset-inline-end: calc((1px - var(--grab)) / 2); width: var(--grab); z-index: 1; cursor: col-resize; outline: none; touch-action: none; }
 .fui-col-resizer[data-focus-visible] { outline: 1px dotted var(--ink); outline-offset: -1px; }
 .fui-col-resizer[data-resizing] { background: var(--ink); width: 1px; inset-inline-end: 0; }
+/* The last column's drag area stays inside the list, so it adds no sideways scrolling. */
+.fui-list-col:last-child .fui-col-resizer:not([data-resizing]) { inset-inline-end: 0; width: calc((var(--grab) + 1px) / 2); }
 .fui-list-cell { height: var(--row-h); padding: 0 var(--pad-x); outline: none; overflow: hidden; text-overflow: ellipsis; padding-block: 0; line-height: 0; }
 .fui-list .fui-num { font-family: var(--font-mono); text-align: end; }
 .fui-list-col--check, .fui-list-cell--check { padding: 0 0 0 var(--pad-x); }
