@@ -21,5 +21,3 @@ jobs:
         run: test "v$(node -p "require('./packages/fenster-ui/package.json').version")" = "$GITHUB_REF_NAME"
       - run: npm run build
       - run: npm publish -w packages/fenster-ui
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
