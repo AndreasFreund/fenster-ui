@@ -6,6 +6,7 @@ export const frameworkLabels: FrameworkLabels = {
 };
 
 export const copy = {
+  repository: 'https://github.com/AndreasFreund/fenster-ui',
   resizePagesPane: 'Resize page list',
   resizeExamplePane: 'Resize example navigation',
   showPages: 'Show page list',

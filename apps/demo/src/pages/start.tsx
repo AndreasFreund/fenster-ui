@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Callout } from '@andreasfreund/fenster-ui';
+import { Callout, Link } from '@andreasfreund/fenster-ui';
 import { copy } from '../copy';
 import { Example, PageLink } from '../demo';
 import { ExampleApp } from '../ExampleApp';
@@ -47,6 +47,7 @@ export function Overview() {
         <p><PageLink to="guidelines">Design guidelines</PageLink>: the rules the components and this demo follow.</p>
         <p><PageLink to="frame">App frame</PageLink>: bars, panes and the status bar.</p>
         <p><PageLink to="list">List view</PageLink>: sorting, resizing and selection.</p>
+        <p><Link href={copy.repository} target="_blank" rel="noreferrer">Source code on GitHub</Link>: the library, this demo and the issue tracker.</p>
       </Example>
     </>
   );

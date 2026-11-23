@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Key } from 'react-aria-components';
 import {
-  AppFrame, BarButton, BarMenu, BarSearchField, BarSpacer, Breadcrumbs, Button, CommandBar, Dialog, DialogFooter, MenuBar,
+  AppFrame, BarButton, BarMenu, BarSearchField, BarSpacer, Breadcrumbs, Button, CommandBar, Dialog, DialogFooter, Link, MenuBar,
   MenuItem, MenuSeparator, Pane, SplitView, StatusBar, StatusCell, ToastRegion, TreeView, useCommands, type Command,
   type TreeNode,
 } from '@andreasfreund/fenster-ui';
@@ -109,6 +109,8 @@ export function App() {
             <MenuItem command={commands.find} />
           </BarMenu>
           <BarMenu label="Help">
+            <MenuItem id="source" href={copy.repository} target="_blank" rel="noreferrer">Source code</MenuItem>
+            <MenuSeparator />
             <MenuItem command={commands.about} />
           </BarMenu>
         </MenuBar>
@@ -154,6 +156,7 @@ export function App() {
           {({ close }) => (
             <>
               <p style={{ margin: 0, maxWidth: 360 }}>A compact desktop-style component framework on React Aria Components. Released under the MIT licence.</p>
+              <p style={{ margin: 0 }}><Link href={copy.repository} target="_blank" rel="noreferrer">Source code on GitHub</Link></p>
               <DialogFooter>
                 <Button variant="primary" onPress={close} autoFocus>Close</Button>
               </DialogFooter>
