@@ -115,7 +115,8 @@ html:has(> body .fui-app), body:has(.fui-app) { height: 100%; overflow: hidden; 
 .fui-bar-field .fui-input { height: var(--row-h); }
 .fui-bar-field--stretch .fui-input { flex: 1; min-width: 0; }
 .fui-bar .fui-input.fui-bar-search { width: 180px; min-width: 100px; flex-shrink: 1; height: var(--row-h); }
-.fui-bar-searchfield { position: relative; display: flex; align-items: center; min-width: 0; flex-shrink: 1; }
+/* Shrinks with the bar, down to the input's own minimum. */
+.fui-bar-searchfield { position: relative; display: flex; align-items: center; min-width: 100px; flex-shrink: 1; }
 .fui-bar .fui-bar-searchfield--clear .fui-input.fui-bar-search { padding-inline-end: var(--row-h); }
 .fui-bar-search::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
 .fui-bar-searchfield .fui-bar-search-clear { position: absolute; inset-block: 1px; inset-inline-end: 1px; width: calc(var(--row-h) - 2px); height: auto; border-radius: 0; }
