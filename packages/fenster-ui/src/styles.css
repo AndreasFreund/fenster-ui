@@ -590,6 +590,9 @@ button.fui-twist::before { content: ""; position: absolute; inset-block-start: c
   position: relative;
   outline: none;
   cursor: default;
+  /* A menu item with an href is a link; it looks like the other items. */
+  color: inherit;
+  text-decoration: none;
   white-space: nowrap;
   gap: var(--space-1);
 }
