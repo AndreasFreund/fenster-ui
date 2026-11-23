@@ -4,7 +4,7 @@ A compact desktop-style component framework on React Aria Components.
 
 - [`packages/fenster-ui`](packages/fenster-ui): the library, published as
   [`@andreasfreund/fenster-ui`](https://www.npmjs.com/package/@andreasfreund/fenster-ui)
-- [`apps/demo`](apps/demo): every component on one page, deployed to
+- [`apps/demo`](apps/demo): every component with live examples, deployed to
   [andreasfreund.github.io/fenster-ui](https://andreasfreund.github.io/fenster-ui/)
 
 ```sh

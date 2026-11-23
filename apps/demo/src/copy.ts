@@ -6,11 +6,13 @@ export const frameworkLabels: FrameworkLabels = {
 };
 
 export const copy = {
-  resizeFolderPane: 'Resize folder pane',
-  showFolders: 'Show folders',
+  resizePagesPane: 'Resize page list',
+  resizeExamplePane: 'Resize example navigation',
+  showPages: 'Show page list',
   moreNotifications: (n: number) => `${n} more ${n === 1 ? 'notification' : 'notifications'}`,
   loadingMore: 'Loading more...',
   close: 'Close',
+  clearFilter: 'Clear filter',
   hue: 'Hue',
   hex: 'Hex',
   dropFilesHere: 'Drop files here',

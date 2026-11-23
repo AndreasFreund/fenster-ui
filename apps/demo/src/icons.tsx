@@ -22,6 +22,14 @@ export function fileIcon(name: string) {
   return i(File);
 }
 
+/** What a file's icon stands for, shown as its hint. */
+export function fileKind(name: string) {
+  if (/\.(ts|tsx|js)$/.test(name)) return 'Source file';
+  if (name.endsWith('.json')) return 'JSON file';
+  if (name.endsWith('.sql')) return 'SQL script';
+  return 'File';
+}
+
 /** Tree rows: open or closed folders, files by extension. */
 export const treeIcon = (node: TreeNode, { isExpanded, hasChildItems }: { isExpanded: boolean; hasChildItems: boolean }) =>
   hasChildItems ? (isExpanded ? i(FolderOpen) : i(Folder)) : fileIcon(node.label);

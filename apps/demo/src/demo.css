@@ -1,0 +1,21 @@
+/* The demo's own page layout. Everything else comes from the framework. */
+.demo-page { display: flex; flex-direction: column; gap: var(--space-5); max-width: 800px; }
+.demo-head { display: flex; flex-direction: column; gap: var(--space-2); }
+.demo-page p { margin: 0; }
+.demo-example { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.demo-live { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-3); border: 1px solid var(--line); min-width: 0; }
+.demo-live--flush { padding: 0; gap: 0; }
+.demo-code {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--line);
+  background: var(--bg-chrome);
+  overflow: auto;
+  cursor: text;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.demo-live + .demo-code { margin-top: calc(var(--space-2) * -1); border-top: 0; }
+.demo-readout { padding: var(--space-2) var(--space-3); }
+.demo-rules { display: flex; flex-direction: column; gap: var(--space-3); }
+.demo-frame { display: flex; flex-direction: column; height: 180px; }
