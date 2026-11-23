@@ -1,3 +1,4 @@
+import { isAbsolute } from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -6,6 +7,6 @@ export default defineConfig({
   plugins: [react()],
   build: {
     lib: { entry: 'src/index.ts', formats: ['es'], fileName: 'index' },
-    rollupOptions: { external: (id) => !id.startsWith('.') && !id.startsWith('/') && !id.startsWith('\0') },
+    rollupOptions: { external: (id) => !id.startsWith('.') && !isAbsolute(id) &&!id.startsWith('\0') },
   },
 });
