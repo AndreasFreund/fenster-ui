@@ -165,7 +165,7 @@ export function Lists() {
       >
         <FilesExample />
       </Example>
-      <Example title="Many rows" note="A virtualized list renders only the rows in view and loads more as you reach the end. Checkboxes are an extra way to select." flush>
+      <Example title="Many rows" note="Virtualized: only visible rows render. Loads more on scroll. Selection checkboxes as an alternative to click." flush>
         <LogExample />
       </Example>
     </>
@@ -201,7 +201,7 @@ export function Trees() {
     <>
       <Example
         title="Tree"
-        note="Rows run from edge to edge. The icon shows the kind of object; a row's state is a marker at its end. Plus and minus expand and collapse the focused row, and the asterisk expands everything below it."
+        note="Rows run edge to edge. Icons show object kind; markers show state. +/- expand and collapse; * expands the full subtree."
         code={TREE}
         flush
       >
@@ -238,7 +238,7 @@ export function Smaller() {
           {[1, 2, 3, 4, 5, 6].map((n) => <ListBoxOption key={n} id={`w${n}`}>{`Worker ${n}`}</ListBoxOption>)}
         </ListBox>
       </Example>
-      <Example title="Tabs" note="One row of tabs; tabs that do not fit scroll sideways. A tab that does not apply is disabled, not hidden.">
+      <Example title="Tabs" note="One row; overflow scrolls sideways. Disabled tabs stay visible.">
         <Tabs defaultSelectedKey="general">
           <TabList aria-label="Settings">
             <Tab id="general">General</Tab>

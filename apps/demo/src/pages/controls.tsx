@@ -26,7 +26,7 @@ export function Buttons() {
     <>
       <Example
         title="Buttons and links"
-        note="One primary button per group, for the action most people came for. Danger is only for destroying data. Labels are one or two words in sentence case."
+        note="One primary button per group. Danger only for destructive actions."
         code={BUTTONS}
       >
         <div className="fui-row-gap">
@@ -71,7 +71,7 @@ export function Fields() {
     <>
       <Example
         title="Form"
-        note="A Form puts labels in a fixed left column. An error says what is wrong, then what to enter; the status word before it comes from LabelsProvider."
+        note="A Form puts labels in a fixed left column. The status word before errors comes from LabelsProvider."
         code={FIELDS}
       >
         <Form onSubmit={(e) => e.preventDefault()}>
@@ -110,7 +110,7 @@ export function Choices() {
   const all = options.size === OPTIONS.length;
   return (
     <>
-      <Example title="Checkboxes" note="A parent checkbox is indeterminate while only some of its options are on. A disabled GroupBox disables everything inside, so what does not apply stays visible.">
+      <Example title="Checkboxes" note="A parent checkbox is indeterminate when some options are on. A disabled GroupBox disables its contents.">
         <GroupBox legend="Folder options">
           <Checkbox isSelected={all} isIndeterminate={options.size > 0 && !all} onChange={(on) => setOptions(new Set(on ? OPTIONS.map((o) => o.id) : []))}>
             All options
@@ -126,7 +126,7 @@ export function Choices() {
           <Checkbox>Use different credentials</Checkbox>
         </GroupBox>
       </Example>
-      <Example title="Radio buttons, groups and switches" note="Prefer a checkbox in a form. A switch is for a setting that applies at once.">
+      <Example title="Radio buttons, groups and switches" note="Checkboxes for forms; switches for settings that apply immediately.">
         <Form onSubmit={(e) => e.preventDefault()}>
           <RadioGroup label="Mode" defaultValue="rw">
             <Radio value="rw">Read and write</Radio>

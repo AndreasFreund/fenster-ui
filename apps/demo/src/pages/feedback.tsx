@@ -27,14 +27,14 @@ export function StatusPage() {
     <>
       <Example
         title="Status markers"
-        note="A coloured square and a word. The framework knows tones, not meanings: the app keeps its states in one module, so a mark means one thing everywhere."
+        note="A coloured square and a word. The framework has tones, not meanings — map your app's states to tones in one place."
         code={STATUS}
       >
         <div className="fui-row-gap">
           {(Object.keys(kinds) as Kind[]).map((k) => <Status key={k} kind={k} />)}
         </div>
       </Example>
-      <Example title="Callouts" note="A framed message in the page. An error says what happened, then what to do. A callout that has been read can offer a close button.">
+      <Example title="Callouts" note="An inline message tinted by tone. onDismiss adds a close button.">
         {noteShown
           ? <Callout tone="info" marker={<Status kind="note" />} title="Index rebuilt." onDismiss={() => setNoteShown(false)} closeIcon={closeIcon} closeLabel={copy.close}>The search index now covers 1,284 files.</Callout>
           : <div><Button onPress={() => setNoteShown(true)}>Show again</Button></div>}
@@ -81,7 +81,7 @@ export function Tooltips() {
     <>
       <Example
         title="Tooltip"
-        note="A tooltip names an icon-only control. It opens on hover and on keyboard focus, so it goes only on things that can take focus. What an icon in a row means belongs in the row's text or a column, as the Kind column does in the list view."
+        note="A tooltip names an icon-only control. Opens on hover and keyboard focus — wrap only focusable elements."
         code={TOOLTIP}
         flush
       >
@@ -120,7 +120,7 @@ export function Dialogs() {
   const [where, setWhere] = useState<Where>('center');
   return (
     <>
-      <Example title="Modal dialogs" note="A modal dialog blocks the window until it is answered. One primary button, for the action Enter triggers; danger only for destroying data. A form in a dialog grows with its widest control.">
+      <Example title="Modal dialogs" note="A modal dialog blocks the window until answered. Forms in a dialog size to their widest control.">
         <div className="fui-row-gap">
           <Button onPress={() => setConfirmOpen(true)}>Confirm dialog</Button>
           <Button onPress={() => setErrorOpen(true)}>Error dialog</Button>
@@ -129,7 +129,7 @@ export function Dialogs() {
       </Example>
       <Example
         title="Floating dialog"
-        note="A non-modal dialog floats without blocking the window; Escape closes it. It can sit at the top end of the window, or in an element such as this pane, and follows that element when it resizes."
+        note="A non-modal dialog floats without blocking; Escape closes it. Place it at the window's top end, or inside an element — it follows that element on resize."
         code={FLOATING}
       >
         <RadioGroup label="Position" value={where} onChange={(v) => setWhere(v as Where)}>
@@ -139,7 +139,7 @@ export function Dialogs() {
         </RadioGroup>
         <div><Button isDisabled={findOpen} onPress={() => setFindOpen(true)}>Find panel</Button></div>
       </Example>
-      <Example title="Popover" note="A small dialog attached to the button that opens it. Escape or a click outside closes it.">
+      <Example title="Popover" note="A small dialog anchored to its trigger. Escape or outside click closes it.">
         <div>
           <DialogTrigger>
             <Button>Retry policy</Button>
@@ -226,7 +226,7 @@ export function Sections() {
           </Disclosure>
         </DisclosureGroup>
       </Example>
-      <Example title="Drop zone" note="A target for files dragged in from outside, with a button for everyone who does not drag.">
+      <Example title="Drop zone" note="Drop target for external files, with a button fallback.">
         <DropZone onDrop={async (e) => setDropped(e.items.filter((i) => i.kind === 'file').map((i) => (i as { name: string }).name))}>
           <span className="fui-muted">{dropped.length ? `Received: ${dropped.join(', ')}` : copy.dropFilesHere}</span>
           <FileTrigger allowsMultiple onSelect={(list) => setDropped(list ? [...list].map((f) => f.name) : [])}>

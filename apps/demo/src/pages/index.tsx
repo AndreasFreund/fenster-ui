@@ -17,8 +17,8 @@ export interface Group { id: string; title: string; lead: string; pages: Page[] 
 
 export const GROUPS: Group[] = [
   {
-    id: 'start', title: 'Getting started', lead: 'What the framework is and the rules it follows.', pages: [
-      { id: 'overview', title: 'Overview', lead: 'A compact desktop-style component framework on React Aria Components.', Body: Overview },
+    id: 'start', title: 'Getting started', lead: 'Setup and principles.', pages: [
+      { id: 'overview', title: 'Overview', lead: 'Compact desktop-style UI on React Aria Components.', Body: Overview },
       { id: 'example', title: 'Example app', lead: 'The components together, as an app would use them.', Body: ExamplePage },
       { id: 'guidelines', title: 'Design guidelines', lead: 'Nine short rules. The components follow them, and so does this demo.', Body: Guidelines },
     ],
@@ -47,7 +47,7 @@ export const GROUPS: Group[] = [
     ],
   },
   {
-    id: 'feedback', title: 'Feedback', lead: 'Telling people what happened, and asking them.', pages: [
+    id: 'feedback', title: 'Feedback', lead: 'Status, messages and dialogs.', pages: [
       { id: 'status', title: 'Status and callouts', lead: 'A tone always comes with a word.', Body: StatusPage },
       { id: 'notifications', title: 'Notifications', lead: 'The status bar for routine feedback, notifications for news.', Body: Notifications },
       { id: 'tooltips', title: 'Tooltips', lead: 'A name for a control that shows only an icon.', Body: Tooltips },

@@ -155,7 +155,7 @@ export function App() {
         <Dialog title="About fenster-ui" isOpen={aboutOpen} onOpenChange={setAboutOpen}>
           {({ close }) => (
             <>
-              <p style={{ margin: 0, maxWidth: 360 }}>A compact desktop-style component framework on React Aria Components. Released under the MIT licence.</p>
+              <p style={{ margin: 0, maxWidth: 360 }}>Compact desktop-style UI on React Aria Components. MIT licence.</p>
               <p style={{ margin: 0 }}><Link href={copy.repository} target="_blank" rel="noreferrer">Source code on GitHub</Link></p>
               <DialogFooter>
                 <Button variant="primary" onPress={close} autoFocus>Close</Button>

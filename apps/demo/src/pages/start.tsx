@@ -38,7 +38,7 @@ export function Overview() {
       )}
       <Example
         title="Install"
-        note="React Aria provides behaviour, keyboard handling and accessibility. The framework adds layout, look and a few app-level helpers."
+        note="React Aria handles behaviour, keyboard and accessibility — this package adds layout, look and app-level helpers."
         code="npm install @andreasfreund/fenster-ui react-aria-components react-aria"
       />
       <Example title="Start" note="Load the styles and fonts once, apply the saved appearance, then render inside an AppFrame." code={START} />

@@ -1,8 +1,8 @@
 # fenster-ui
 
-A compact desktop-style component framework on [React Aria Components](https://react-spectrum.adobe.com/react-aria/) 1.22.
-React Aria provides behaviour, keyboard handling and accessibility; this package provides layout, look and a few
-app-level helpers (commands, shortcuts, appearance).
+Compact desktop-style UI on [React Aria Components](https://react-spectrum.adobe.com/react-aria/) 1.22.
+React Aria handles behaviour, keyboard and accessibility — this package adds layout, look and app-level helpers
+(commands, shortcuts, appearance).
 
 <a href="https://andreasfreund.github.io/fenster-ui/">
   <picture>
@@ -17,8 +17,8 @@ app-level helpers (commands, shortcuts, appearance).
 npm install @andreasfreund/fenster-ui react-aria-components react-aria
 ```
 
-Apps that bundle with Vite should dedupe `react`, `react-dom`, `react-aria` and `react-aria-components`, so the app
-and the framework share one copy. The [demo](https://andreasfreund.github.io/fenster-ui/) shows every component.
+Dedupe `react`, `react-dom`, `react-aria` and `react-aria-components` in Vite so app and library share one copy.
+The [demo](https://andreasfreund.github.io/fenster-ui/) shows every component.
 
 Peer dependencies: `react` and `react-dom` 19, `react-aria` and `react-aria-components` ^1.22.
 
@@ -45,15 +45,13 @@ root.render(
 
 Set them on `<html>`, or on an `AppFrame` / `Root`: overlays opened inside a frame render inside it and inherit both.
 
-The appearance API stores the user's choice in `localStorage` and applies it:
+The appearance API persists choices in `localStorage`:
 `loadAppearance`, `saveAppearance`, `applyAppearance`, `initAppearance`, `forcedAppearance`, `resolveAccent`, `ACCENT_PRESETS`.
-An app sets its own defaults for users who have saved nothing with `initAppearance({ theme: 'light', density: 'comfortable' })`.
-A second argument forces parts for every user, whatever they saved, such as a brand accent:
-`initAppearance({}, { accent: { kind: 'custom', color: '#b0005a' } })`. Forced parts are never written over the user's
-own choice, and `forcedAppearance()` returns them so a settings dialog can leave out their controls.
+Set defaults for new users with `initAppearance({ theme: 'light', density: 'comfortable' })`.
+A second argument forces parts regardless of what the user saved — useful for a brand accent:
+`initAppearance({}, { accent: { kind: 'custom', color: '#b0005a' } })`. Forced parts don't overwrite the user's saved choice; `forcedAppearance()` returns them so a settings dialog can hide those controls.
 An appearance is `{ theme: 'system' | 'light' | 'dark', accent, density: 'compact' | 'comfortable' }`, where `accent` is
-a preset id or a custom colour. Presets have ids and colours; the app names them. A custom colour is darkened (light
-theme) or lightened (dark theme) until it reaches 4.5:1 against `bg`. The demo's `src/AppearanceDialog.tsx` is an example settings dialog.
+a preset id or a custom colour. Presets have ids and colours; the app names them. A custom colour is adjusted until it reaches 4.5:1 against `bg`. See the demo's `src/AppearanceDialog.tsx` for a settings dialog.
 
 ## Tokens
 
@@ -73,11 +71,10 @@ All values live in `src/tokens.css` as CSS custom properties.
 
 In Comfortable every pointer target is at least 24×24 px (WCAG 2.2 target size), using invisible hit areas where the drawn control is smaller. Checkbox, radio and expander sizes are chosen so their marks centre on whole pixels.
 
-Type sizes, line heights and the row, control and bar heights are in `rem`, so they follow the browser's text size, and
-are rounded to whole pixels; the numbers in tokens.css are their pixel values at the default 16px. Other sizes stay in
-pixels. `useMetrics()` gives the current row, control and checkbox-column sizes in pixels to code that needs numbers;
-`useDensity()` gives the density. `accent-bg` and `info-bg` are the
-colour mixed into `bg` (15% light, 30% dark; info 25% dark).
+Type sizes, line heights, row/control/bar heights are `rem` — they scale with the browser's text size and round to whole
+pixels. The numbers in tokens.css are their pixel values at 16px root. Other sizes are `px`. `useMetrics()` returns
+current row, control and checkbox-column sizes in pixels; `useDensity()` returns the density. `accent-bg` and `info-bg`
+are the colour mixed into `bg` (15% light, 30% dark; info 25% dark).
 
 ## Fonts
 
@@ -86,13 +83,12 @@ bundler emits the font files.
 
 ## Labels and language
 
-The framework contains no wording. Visible labels are props (field labels, `ListLoadMore` / `TreeViewLoadMore`
+No wording is baked in. Visible labels are props (`ListLoadMore` / `TreeViewLoadMore`
 children, `ToastRegion closeLabel` / `waitingLabel`, `ColorPicker hueLabel` / `hexLabel`, `SplitView splitterLabel`, `Dialog closeLabel`, `Callout closeLabel`, `BarSearchField clearLabel`).
-The one word a component renders itself, the status word before field errors, is `LabelsProvider`'s `invalid`; its
-optional `keyNames` localise shortcut
-legends (`{ Ctrl: 'Strg', Delete: 'Entf' }`). Accessible names of internal buttons (spin buttons, combo box button,
-calendar navigation) come from React Aria and follow its `I18nProvider` locale. Set `--fui-status-chars` to the length
-of the longest status word so markers line up in lists.
+The one word a component renders — the status prefix before field errors — comes from `LabelsProvider`'s `invalid`.
+Optional `keyNames` localise shortcut legends (`{ Ctrl: 'Strg', Delete: 'Entf' }`). Internal button names (spin buttons,
+combo box, calendar nav) come from React Aria's `I18nProvider`. Set `--fui-status-chars` to the longest status word's
+length so markers line up in lists.
 
 Layouts use logical properties and mirror in right-to-left locales.
 
@@ -153,31 +149,26 @@ do. The framework knows tones, not meanings: keep the app's states in one module
 (see `demo/status.tsx`), and add tones with CSS: `.fui-tone--archived { --fui-tone: …; --fui-tone-bg: …; }`.
 
 **Controls.** Text first: icons only for kinds of objects (folder, file type) and a few universal commands (new, open,
-save, find, refresh, close). Icon-only controls need a name and a tooltip. Tooltips go on focusable controls only, so keyboard users get them too;
-what an icon in a row means belongs in the row's text or a column.
-Labels are one or two words in sentence case, without exclamation marks or emoji; uppercase only in status words. One
-primary button per dialog, for the action Enter triggers; `danger` only for destroying data. Prefer a checkbox in forms;
-use a switch for settings that apply at once.
+save, find, refresh, close). Icon-only controls need an `aria-label` and a tooltip; tooltips go on focusable elements
+only. Labels are one or two words, sentence case; uppercase for status words only. One primary button per dialog;
+`danger` only for destructive actions. Checkboxes in forms, switches for live-apply settings.
 
-**Emphasis and state.** Make the action most users came for the prominent one. Give each setting one place, and
-disable what does not apply right now rather than hiding it; leave out what never will. A mark means one thing everywhere. Show any state that changes what
-is listed, such as a filter or a sort, and give it a way back: a search field gets a clear button.
+**Emphasis and state.** Make the main action prominent. One place per setting; disable what doesn't apply, hide what
+never will. Show any state that filters or sorts content, and give it a way back (clear button, etc.).
 
 **Navigation.** Selecting browses; following a link navigates, and navigation is what Back undoes. Changes to a view's
 layout preview live and can be cancelled.
 
-**Touch.** Built for mouse and keyboard, usable on a phone. A tap selects a row (row actions run on double-click or
-Enter only) and the tree's +/- box opens folders. Only panes scroll; bars scroll sideways when too narrow, and the
-navigation pane takes at most 45% of a narrow window. Bars keep clear of the notch and corners while content runs edge
-to edge. Use `viewport-fit=cover` and, on iOS, `maximum-scale=1`, which stops iOS zooming into small fields (see the
-demo's `index.html`).
+**Touch.** Mouse and keyboard first, usable on a phone. Tap selects; row actions need double-click or Enter.
+Only panes scroll; bars scroll sideways when too narrow. The nav pane caps at 45% on narrow screens. Bars respect
+safe areas; content runs edge to edge. Use `viewport-fit=cover` and `maximum-scale=1` on iOS (stops zoom into small
+fields; see the demo's `index.html`).
 
-**Motion.** None, except indeterminate progress and the newest toast sliding in, both off under
-`prefers-reduced-motion`.
+**Motion.** None, except indeterminate progress and toast entry — both honour `prefers-reduced-motion`.
 
 ## Selection
 
-ListView, TreeView and ListBox select like a desktop list. Pass `selectionMode="multiple"` for multi-select.
+ListView, TreeView and ListBox select like a native list. Pass `selectionMode="multiple"` for multi-select.
 
 | Gesture | Effect |
 |---|---|
@@ -210,7 +201,7 @@ resize pointer on splitters and column borders; `fui-working` and `fui-busy` set
 has focus, unmodified keys and text-editing combinations go to the field. Bind each command once with `useCommands`
 and pass the same `Command` to its `MenuItem`.
 
-Bind only combinations a browser hands to the page:
+Only bind what the browser lets through:
 
 - Never reaches the page: Ctrl/Cmd+N, T, W, Shift+N, Shift+T, Shift+W, Q, Tab, PageUp/PageDown.
 - Reachable but reserved by users' habits: F5 / Ctrl+R, Alt+Left/Right, Ctrl+L, Ctrl+P, Ctrl+D, Ctrl+H/J,

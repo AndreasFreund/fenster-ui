@@ -236,7 +236,7 @@ export function Commands() {
     <>
       <Example
         title="One definition per command"
-        note="A Command holds the label, shortcut, icon, disabled state and action. The menu item, the bar button and the shortcut all read it, so they cannot disagree. Delete, Undo and Redo are disabled until they apply."
+        note="A Command holds label, shortcut, icon, disabled state and action. Menu items, bar buttons and shortcuts all read the same object. Delete, Undo and Redo disable when they don't apply."
         code={COMMANDS}
         flush
       >
@@ -263,7 +263,7 @@ export function Bars() {
     <>
       <Example
         title="Command bar"
-        note="Buttons carry text; an icon is added only for a few universal commands. An icon-only button needs a name and a tooltip. Each control is its own Tab stop."
+        note="Buttons carry text; icons for universal commands only. Icon-only buttons need an aria-label and a tooltip. Each control is its own tab stop."
         code={BARS}
         flush
       >
