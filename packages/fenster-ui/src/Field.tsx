@@ -37,7 +37,6 @@ import {
 import { Arrow } from './Icon';
 import { StatusMarker } from './Tag';
 import { useLabels } from './labels';
-import { Tag } from './TagGroup';
 import { GroupDisabledContext, useIsDisabled } from './disabled';
 import { cx, withClass } from './utils';
 

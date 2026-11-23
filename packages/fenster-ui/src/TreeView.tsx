@@ -178,6 +178,7 @@ export function TreeView<T extends object>({
   return (
     <ItemIconContext.Provider value={itemIcon}>
     <StateRefContext.Provider value={stateRef}>
+    {/* oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- catches keys bubbling from the interactive children */}
     <div className="fui-tree-wrap" onKeyDown={onKeyDown} onPointerDownCapture={onPointerDownCapture}>
       <Tree
         {...props}

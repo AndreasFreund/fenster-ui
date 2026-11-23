@@ -75,6 +75,7 @@ export function Dialog({ title, children, closeIcon, closeLabel, isModal = true,
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') { e.stopPropagation(); onOpenChange?.(false); }
     };
+    // oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- catches keys bubbling from the dialog content
     return <div className="fui-floating fui-modal" onKeyDown={onKeyDown}>{body}</div>;
   }
   return (

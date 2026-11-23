@@ -4,7 +4,6 @@ import {
   type ToggleButtonGroupProps,
   type ToggleButtonProps as RACToggleButtonProps,
 } from 'react-aria-components';
-import { CommandBar } from './Bar';
 import { useIsDisabled } from './disabled';
 import { cx, withClass } from './utils';
 

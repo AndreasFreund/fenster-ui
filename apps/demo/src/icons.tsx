@@ -17,8 +17,8 @@ export const refreshIcon = i(RotateCw);
 /** An icon for a file name, by extension. */
 export function fileIcon(name: string) {
   if (/\.(ts|tsx|js)$/.test(name)) return i(FileCode);
-  if (/\.json$/.test(name)) return i(FileJson);
-  if (/\.sql$/.test(name)) return i(Database);
+  if (name.endsWith('.json')) return i(FileJson);
+  if (name.endsWith('.sql')) return i(Database);
   return i(File);
 }
 

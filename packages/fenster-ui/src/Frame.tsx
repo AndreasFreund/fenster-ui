@@ -1,5 +1,6 @@
 import {
   Children,
+  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -85,6 +86,17 @@ export function SplitView({
     setSized(true);
     setWidth(clamp(w));
   };
+  const [shown, setShown] = useState<number>();
+  useLayoutEffect(() => {
+    const el = rootRef.current?.querySelector(':scope > :first-child');
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      const box = entry.borderBoxSize[0];
+      setShown(Math.round(vertical ? box.blockSize : box.inlineSize));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [vertical]);
   const [dragging, setDragging] = useState(false);
   const start = useRef({ x: 0, w: 0 });
   const clamp = (w: number) => Math.min(maxNavWidth, Math.max(minNavWidth, Math.round(w)));
@@ -145,7 +157,7 @@ export function SplitView({
             role="separator"
             aria-orientation={vertical ? 'horizontal' : 'vertical'}
             aria-label={splitterLabel}
-            aria-valuenow={collapsed ? 0 : Math.round(navWidth())}
+            aria-valuenow={collapsed ? 0 : shown ?? width ?? minNavWidth}
             aria-valuemin={collapsible ? 0 : minNavWidth}
             aria-valuemax={maxNavWidth}
             tabIndex={0}

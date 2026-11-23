@@ -126,6 +126,7 @@ export function BarMenu<T extends object>({ label, isOpen, defaultOpen, onOpenCh
       </RACButton>
       {/* Non-modal, so the other titles still receive the pointer while a menu is open. */}
       <Popover className="fui-popover" placement="bottom start" offset={0} isNonModal={!!bar}>
+        {/* oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- catches keys bubbling from the interactive children */}
         <div onKeyDown={onKeyDown}>
           <RACMenu {...menuProps} ref={menuRef} autoFocus={autoFocus ?? (bar?.focusFirst ? 'first' : undefined)} className="fui-menu" />
         </div>

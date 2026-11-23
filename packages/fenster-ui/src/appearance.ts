@@ -123,12 +123,13 @@ export function initAppearance() {
   if (typeof document !== 'undefined') applyAppearance(loadAppearance());
 }
 
+const darkQuery = () => (typeof matchMedia !== 'undefined' ? matchMedia('(prefers-color-scheme: dark)') : undefined);
+
 /** Whether a theme choice resolves to dark, following the OS for "system". */
 export function useEffectiveDark(theme: ThemeChoice): boolean {
-  const getQuery = () => (typeof matchMedia !== 'undefined' ? matchMedia('(prefers-color-scheme: dark)') : undefined);
-  const [systemDark, setSystemDark] = useState(() => !!getQuery()?.matches);
+  const [systemDark, setSystemDark] = useState(() => !!darkQuery()?.matches);
   useEffect(() => {
-    const query = getQuery();
+    const query = darkQuery();
     if (!query) return;
     const on = (e: MediaQueryListEvent) => setSystemDark(e.matches);
     query.addEventListener('change', on);

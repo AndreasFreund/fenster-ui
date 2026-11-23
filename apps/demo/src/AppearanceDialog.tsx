@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import {
   ACCENT_PRESETS, Button, Checkbox, ColorPicker, Dialog, DialogFooter, Form, GroupBox, Link, Radio, RadioGroup,
   applyAppearance, loadAppearance, resolveAccent, saveAppearance, useEffectiveDark,
@@ -17,20 +17,16 @@ export interface AppearanceDialogProps {
 const accentKey = (a: AccentChoice) => (a.kind === 'custom' ? 'custom' : a.id);
 
 /** Theme, size and accent settings. Changes preview live; OK saves, Cancel reverts. */
-export function AppearanceDialog({ isOpen, onOpenChange, onSave }: AppearanceDialogProps) {
+export function AppearanceDialog(props: AppearanceDialogProps) {
+  return props.isOpen ? <AppearanceForm {...props} /> : null;
+}
+
+function AppearanceForm({ isOpen, onOpenChange, onSave }: AppearanceDialogProps) {
   const [saved, setSaved] = useState<Appearance>(loadAppearance);
   const [draft, setDraft] = useState<Appearance>(saved);
-  const [lastCustom, setLastCustom] = useState('#b0005a');
+  const [lastCustom, setLastCustom] = useState(saved.accent.kind === 'custom' ? saved.accent.color : '#b0005a');
   const dark = useEffectiveDark(draft.theme);
   const t = copy.appearance;
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const current = loadAppearance();
-    setSaved(current);
-    setDraft(current);
-    if (current.accent.kind === 'custom') setLastCustom(current.accent.color);
-  }, [isOpen]);
 
   const update = (next: Appearance) => {
     setDraft(next);

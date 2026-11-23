@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 
 /**
  * Shortcut notation: modifiers then a key, joined by "+": "Mod+S", "Alt+N", "Mod+Shift+Z", "Delete".
  * "Mod" is Ctrl, or Command on macOS.
  */
 export const isMac =
-  typeof navigator !== 'undefined' && /Mac|iPhone|iPad|iPod/.test((navigator as any).userAgentData?.platform ?? navigator.platform ?? navigator.userAgent);
+  typeof navigator !== 'undefined' && /Mac|iPhone|iPad|iPod/.test((navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform ?? navigator.platform ?? navigator.userAgent);
 
 interface Parsed { mod: boolean; ctrl: boolean; alt: boolean; shift: boolean; key: string }
 
@@ -69,7 +69,9 @@ export type ShortcutMap = Record<string, ((e: KeyboardEvent) => void) | false | 
  */
 export function useShortcuts(map: ShortcutMap, { enabled = true }: { enabled?: boolean } = {}) {
   const ref = useRef(map);
-  ref.current = map;
+  useLayoutEffect(() => {
+    ref.current = map;
+  });
   useEffect(() => {
     if (!enabled) return;
     const onKeyDown = (e: KeyboardEvent) => {

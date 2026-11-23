@@ -238,6 +238,7 @@ export function App() {
     refresh: { id: 'refresh', label: 'Refresh', run: actions.refresh, isDisabled: working },
     appearance: { id: 'appearance', label: 'Appearance...', run: () => setAppearanceOpen(true) },
   };
+  // oxlint-disable-next-line react/refs -- the commands read refs when they run, not during render
   useCommands(Object.values(commands), { enabled: !dialogOpen && !appearanceOpen });
 
   const allOptions = options.size === OPTIONS.length;
