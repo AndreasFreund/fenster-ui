@@ -40,6 +40,7 @@ Set them on `<html>`, or on an `AppFrame` / `Root`: overlays opened inside a fra
 
 The appearance API stores the user's choice in `localStorage` and applies it:
 `loadAppearance`, `saveAppearance`, `applyAppearance`, `initAppearance`, `resolveAccent`, `ACCENT_PRESETS`.
+An app sets its own defaults for users who have saved nothing with `initAppearance({ theme: 'light', density: 'comfortable' })`.
 An appearance is `{ theme: 'system' | 'light' | 'dark', accent, density: 'compact' | 'comfortable' }`, where `accent` is
 a preset id or a custom colour. Presets have ids and colours; the app names them. A custom colour is darkened (light
 theme) or lightened (dark theme) until it reaches 4.5:1 against `bg`. The demo's `src/AppearanceDialog.tsx` is an example settings dialog.

@@ -23,6 +23,8 @@ export const ACCENT_PRESETS: AccentPreset[] = [
 
 export const DEFAULT_APPEARANCE: Appearance = { theme: 'system', accent: { kind: 'preset', id: 'teal' }, density: 'compact' };
 const STORAGE_KEY = 'fenster-ui:appearance';
+/** What applies while nothing is saved: DEFAULT_APPEARANCE, with the app's own defaults from `initAppearance`. */
+let defaults = DEFAULT_APPEARANCE;
 
 /** `bg` of each theme, as in tokens.css. */
 const LIGHT_BG = '#ffffff';
@@ -80,16 +82,16 @@ export function resolveAccent(choice: AccentChoice): ResolvedAccent {
 export function loadAppearance(): Appearance {
   try {
     const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
-    const theme: ThemeChoice = ['system', 'light', 'dark'].includes(raw?.theme) ? raw.theme : DEFAULT_APPEARANCE.theme;
+    const theme: ThemeChoice = ['system', 'light', 'dark'].includes(raw?.theme) ? raw.theme : defaults.theme;
     const a = raw?.accent;
     const accent: AccentChoice =
       a?.kind === 'custom' && isHex(a.color) ? { kind: 'custom', color: a.color }
       : a?.kind === 'preset' && ACCENT_PRESETS.some((p) => p.id === a.id) ? { kind: 'preset', id: a.id }
-      : DEFAULT_APPEARANCE.accent;
-    const density: Density = raw?.density === 'comfortable' ? 'comfortable' : 'compact';
+      : defaults.accent;
+    const density: Density = ['compact', 'comfortable'].includes(raw?.density) ? raw.density : defaults.density;
     return { theme, accent, density };
   } catch {
-    return DEFAULT_APPEARANCE; // Storage can be missing or blocked; fall back quietly.
+    return defaults; // Storage can be missing or blocked; fall back quietly.
   }
 }
 
@@ -118,8 +120,12 @@ export function applyAppearance(a: Appearance, root: HTMLElement = document.docu
   }
 }
 
-/** Apply the saved appearance. Call once before the first render to avoid a flash of the default theme. */
-export function initAppearance() {
+/**
+ * Apply the saved appearance. Call once before the first render to avoid a flash of the default theme.
+ * `appDefaults` replace parts of DEFAULT_APPEARANCE for users who have saved nothing, here and in `loadAppearance`.
+ */
+export function initAppearance(appDefaults: Partial<Appearance> = {}) {
+  defaults = { ...DEFAULT_APPEARANCE, ...appDefaults };
   if (typeof document !== 'undefined') applyAppearance(loadAppearance());
 }
 
